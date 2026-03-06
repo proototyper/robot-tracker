@@ -407,6 +407,9 @@
     transition: all 0.2s;
   }
   .task-text.done { color: var(--muted); text-decoration: line-through; }
+  .task-link { color: inherit; text-decoration: none; border-bottom: 1px dashed var(--border2); transition: color 0.15s, border-color 0.15s; }
+  .task-link:hover { color: var(--p1); border-bottom-color: var(--p1); }
+  .task-text.done .task-link { color: var(--muted); border-bottom-color: var(--muted); pointer-events: none; }
 
   .task-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
@@ -638,12 +641,12 @@ const PHASES = [
           { label: 'freeCodeCamp Python', url: 'https://www.youtube.com/watch?v=rfscVS0vtbw' },
         ],
         tasks: [
-          { id: 't1-1', day: 'MON', text: 'numpy 배열, 행렬 연산 실습' },
-          { id: 't1-2', day: 'TUE', text: '3Blue1Brown 선형대수 1~2강 — 벡터란 무엇인가' },
-          { id: 't1-3', day: 'WED', text: 'matplotlib로 센서 데이터 그래프 그리기' },
-          { id: 't1-4', day: 'THU', text: '3Blue1Brown 선형대수 3~4강 — 행렬 변환' },
-          { id: 't1-5', day: 'FRI', text: 'numpy로 2D 로봇 위치 계산 코딩' },
-          { id: 't1-6', day: 'SAT', text: 'Khan Academy 삼각함수 30분 + 복습' },
+          { id: 't1-1', day: 'MON', text: 'numpy 배열, 행렬 연산 실습', url: 'https://numpy.org/doc/stable/user/quickstart.html' },
+          { id: 't1-2', day: 'TUE', text: '3Blue1Brown 선형대수 1강 — 벡터란 무엇인가', url: 'https://www.youtube.com/watch?v=fNk_zzaMoSs' },
+          { id: 't1-3', day: 'WED', text: 'matplotlib로 센서 데이터 그래프 그리기', url: 'https://matplotlib.org/stable/tutorials/pyplot.html' },
+          { id: 't1-4', day: 'THU', text: '3Blue1Brown 선형대수 3강 — 행렬과 선형 변환', url: 'https://www.youtube.com/watch?v=kYB8IZa5AuE' },
+          { id: 't1-5', day: 'FRI', text: 'numpy로 2D 로봇 위치 계산 코딩', url: 'https://numpy.org/doc/stable/user/quickstart.html' },
+          { id: 't1-6', day: 'SAT', text: 'Khan Academy 삼각함수 30분 + 복습', url: 'https://ko.khanacademy.org/math/trigonometry' },
           { id: 't1-7', day: 'SUN', text: '미니 프로젝트: 2D 로봇 팔 위치 계산기 만들기' },
         ]
       },
@@ -657,12 +660,12 @@ const PHASES = [
           { label: 'Ubuntu 듀얼부팅 가이드', url: 'https://www.youtube.com/watch?v=CWQMYN12QD0' },
         ],
         tasks: [
-          { id: 't2-1', day: 'MON', text: 'Ubuntu 22.04 듀얼부팅 설치' },
-          { id: 't2-2', day: 'TUE', text: 'ROS 2 Humble 공식 문서로 설치' },
-          { id: 't2-3', day: 'WED', text: 'ros2 run demo_nodes_cpp talker/listener 실행' },
-          { id: 't2-4', day: 'THU', text: 'Topic, Node 개념 — ros2 topic list/echo' },
-          { id: 't2-5', day: 'FRI', text: '첫 번째 Python ROS 2 노드 직접 작성' },
-          { id: 't2-6', day: 'SAT', text: 'Publisher / Subscriber 패키지 만들기' },
+          { id: 't2-1', day: 'MON', text: 'Ubuntu 22.04 듀얼부팅 설치', url: 'https://ubuntu.com/download/desktop' },
+          { id: 't2-2', day: 'TUE', text: 'ROS 2 Humble 공식 문서로 설치', url: 'https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html' },
+          { id: 't2-3', day: 'WED', text: 'ros2 run demo_nodes_cpp talker/listener 실행', url: 'https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html' },
+          { id: 't2-4', day: 'THU', text: 'Topic, Node 개념 — ros2 topic list/echo', url: 'https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html' },
+          { id: 't2-5', day: 'FRI', text: '첫 번째 Python ROS 2 노드 직접 작성', url: 'https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html' },
+          { id: 't2-6', day: 'SAT', text: 'Publisher / Subscriber 패키지 만들기', url: 'https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html' },
           { id: 't2-7', day: 'SUN', text: 'Obsidian에 이번 주 배운 내용 정리' },
         ]
       },
@@ -676,11 +679,11 @@ const PHASES = [
           { label: 'ROS + Gazebo 연동', url: 'https://gazebosim.org/docs/harmonic/ros2_integration' },
         ],
         tasks: [
-          { id: 't3-1', day: 'DAY1', text: 'Gazebo Harmonic 설치' },
-          { id: 't3-2', day: 'DAY2', text: '기본 월드 띄우기' },
-          { id: 't3-3', day: 'DAY3', text: 'URDF로 간단한 로봇 모델 만들기' },
-          { id: 't3-4', day: 'DAY4', text: 'ROS 2로 Gazebo 로봇 제어하기' },
-          { id: 't3-5', day: 'DAY5', text: 'TurtleBot3 시뮬 키보드 조종' },
+          { id: 't3-1', day: 'DAY1', text: 'Gazebo Harmonic 설치', url: 'https://gazebosim.org/docs/harmonic/install_ubuntu' },
+          { id: 't3-2', day: 'DAY2', text: '기본 월드 띄우기', url: 'https://gazebosim.org/docs/harmonic/building_robot' },
+          { id: 't3-3', day: 'DAY3', text: 'URDF로 간단한 로봇 모델 만들기', url: 'https://docs.ros.org/en/humble/Tutorials/Intermediate/URDF/URDF-Main.html' },
+          { id: 't3-4', day: 'DAY4', text: 'ROS 2로 Gazebo 로봇 제어하기', url: 'https://gazebosim.org/docs/harmonic/ros2_integration' },
+          { id: 't3-5', day: 'DAY5', text: 'TurtleBot3 시뮬 키보드 조종', url: 'https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/' },
           { id: 't3-6', day: 'DAY6', text: '에러 수정 + 복습' },
           { id: 't3-7', day: 'DAY7', text: '미니 프로젝트: 자율 이동 경로 설정' },
         ]
@@ -700,12 +703,12 @@ const PHASES = [
           { label: 'Docker 설치', url: 'https://docs.docker.com/engine/install/ubuntu/' },
         ],
         tasks: [
-          { id: 't4-1', day: 'MON', text: 'NVIDIA Developer 계정 + NGC 등록' },
-          { id: 't4-2', day: 'TUE', text: 'Docker + NVIDIA Container Toolkit 설치' },
-          { id: 't4-3', day: 'WED', text: 'Isaac ROS 환경 세팅 (공식 getting_started)' },
-          { id: 't4-4', day: 'THU', text: 'Isaac ROS AprilTag 튜토리얼 (카메라 태그 인식)' },
-          { id: 't4-5', day: 'FRI', text: 'Isaac ROS Visual SLAM 튜토리얼' },
-          { id: 't4-6', day: 'SAT', text: 'Gazebo + Isaac ROS 연동' },
+          { id: 't4-1', day: 'MON', text: 'NVIDIA Developer 계정 + NGC 등록', url: 'https://catalog.ngc.nvidia.com' },
+          { id: 't4-2', day: 'TUE', text: 'Docker + NVIDIA Container Toolkit 설치', url: 'https://docs.docker.com/engine/install/ubuntu/' },
+          { id: 't4-3', day: 'WED', text: 'Isaac ROS 환경 세팅 (공식 getting_started)', url: 'https://nvidia-isaac-ros.github.io/getting_started/index.html' },
+          { id: 't4-4', day: 'THU', text: 'Isaac ROS AprilTag 튜토리얼 (카메라 태그 인식)', url: 'https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_apriltag/isaac_ros_apriltag/index.html' },
+          { id: 't4-5', day: 'FRI', text: 'Isaac ROS Visual SLAM 튜토리얼', url: 'https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_visual_slam/isaac_ros_visual_slam/index.html' },
+          { id: 't4-6', day: 'SAT', text: 'Gazebo + Isaac ROS 연동', url: 'https://gazebosim.org/docs/harmonic/ros2_integration' },
           { id: 't4-7', day: 'SUN', text: '정리 + 다음 주 계획 세우기' },
         ]
       },
@@ -719,13 +722,13 @@ const PHASES = [
           { label: 'NVIDIA Developer Forum', url: 'https://forums.developer.nvidia.com/c/omniverse/simulation/69' },
         ],
         tasks: [
-          { id: 't5-1', day: 'WK1', text: 'Isaac Sim 다운로드 + 설치 (50GB 주의)' },
-          { id: 't5-2', day: 'WK1', text: 'UI 기본 조작 — 씬 탐색, 카메라' },
-          { id: 't5-3', day: 'WK1', text: '기본 씬 만들기 (바닥, 물체, 조명)' },
-          { id: 't5-4', day: 'WK2', text: 'Franka / UR10 로봇 에셋 불러오기' },
-          { id: 't5-5', day: 'WK2', text: 'ROS 2 브릿지 연결' },
-          { id: 't5-6', day: 'WK2', text: 'Python API로 로봇 관절 제어' },
-          { id: 't5-7', day: 'WK3', text: '커스텀 환경 + 카메라/LiDAR 센서 붙이기' },
+          { id: 't5-1', day: 'WK1', text: 'Isaac Sim 다운로드 + 설치 (50GB 주의)', url: 'https://developer.nvidia.com/isaac/sim' },
+          { id: 't5-2', day: 'WK1', text: 'UI 기본 조작 — 씬 탐색, 카메라', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/installation/install_workstation.html' },
+          { id: 't5-3', day: 'WK1', text: '기본 씬 만들기 (바닥, 물체, 조명)', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/gui/tutorial_gui_simple_objects.html' },
+          { id: 't5-4', day: 'WK2', text: 'Franka / UR10 로봇 에셋 불러오기', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/robot_setup/index.html' },
+          { id: 't5-5', day: 'WK2', text: 'ROS 2 브릿지 연결', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/tutorial_ros2_native.html' },
+          { id: 't5-6', day: 'WK2', text: 'Python API로 로봇 관절 제어', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/core_api_tutorials/tutorial_core_hello_world.html' },
+          { id: 't5-7', day: 'WK3', text: '커스텀 환경 + 카메라/LiDAR 센서 붙이기', url: 'https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/tutorial_ros2_camera.html' },
         ]
       },
       {
@@ -738,12 +741,12 @@ const PHASES = [
           { label: 'RL 개념 10분 영상', url: 'https://www.youtube.com/watch?v=JgvyzIkgxF0' },
         ],
         tasks: [
-          { id: 't6-1', day: 'DAY1', text: '강화학습 개념 영상 시청 (RL in 10 minutes)' },
-          { id: 't6-2', day: 'DAY2', text: 'Isaac Lab 설치 (공식 GitHub)' },
-          { id: 't6-3', day: 'DAY3', text: 'Ant locomotion 예제 실행 — 개미 걷기 훈련' },
-          { id: 't6-4', day: 'DAY4', text: '코드 뜯기 + 리워드 파라미터 수정' },
-          { id: 't6-5', day: 'DAY5', text: '커스텀 환경 만들기 시도' },
-          { id: 't6-6', day: 'DAY6', text: 'Sim-to-Real 개념 학습' },
+          { id: 't6-1', day: 'DAY1', text: '강화학습 개념 영상 시청 (RL in 10 minutes)', url: 'https://www.youtube.com/watch?v=JgvyzIkgxF0' },
+          { id: 't6-2', day: 'DAY2', text: 'Isaac Lab 설치 (공식 GitHub)', url: 'https://isaac-sim.github.io/IsaacLab/source/setup/installation/pip_installation.html' },
+          { id: 't6-3', day: 'DAY3', text: 'Ant locomotion 예제 실행 — 개미 걷기 훈련', url: 'https://isaac-sim.github.io/IsaacLab/source/tutorials/03_envs/run_rl_training.html' },
+          { id: 't6-4', day: 'DAY4', text: '코드 뜯기 + 리워드 파라미터 수정', url: 'https://isaac-sim.github.io/IsaacLab/source/tutorials/03_envs/create_direct_rl_env.html' },
+          { id: 't6-5', day: 'DAY5', text: '커스텀 환경 만들기 시도', url: 'https://isaac-sim.github.io/IsaacLab/source/tutorials/03_envs/create_direct_rl_env.html' },
+          { id: 't6-6', day: 'DAY6', text: 'Sim-to-Real 개념 학습', url: 'https://spinningup.openai.com/en/latest/spinningup/rl_intro.html' },
           { id: 't6-7', day: 'DAY7', text: 'Isaac Lab 미니 프로젝트 설계 문서 작성' },
         ]
       },
@@ -762,12 +765,12 @@ const PHASES = [
           { label: 'PyTorch 공식 튜토리얼', url: 'https://pytorch.org/tutorials/' },
         ],
         tasks: [
-          { id: 't7-1', day: 'DAY1', text: 'OpenCV 기초 — 이미지 읽기, 변환, 필터링' },
-          { id: 't7-2', day: 'DAY2', text: '실시간 카메라 스트림 처리' },
-          { id: 't7-3', day: 'DAY3', text: 'PyTorch 기초 (fast.ai 1~2강)' },
-          { id: 't7-4', day: 'DAY4', text: 'pip install ultralytics → YOLO 설치' },
-          { id: 't7-5', day: 'DAY5', text: '실시간 카메라 물체 인식 구현 (5줄 코드)' },
-          { id: 't7-6', day: 'DAY6', text: 'Isaac ROS + YOLO 파이프라인 연결' },
+          { id: 't7-1', day: 'DAY1', text: 'OpenCV 기초 — 이미지 읽기, 변환, 필터링', url: 'https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html' },
+          { id: 't7-2', day: 'DAY2', text: '실시간 카메라 스트림 처리', url: 'https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html' },
+          { id: 't7-3', day: 'DAY3', text: 'PyTorch 기초 (fast.ai 1~2강)', url: 'https://course.fast.ai' },
+          { id: 't7-4', day: 'DAY4', text: 'pip install ultralytics → YOLO 설치', url: 'https://docs.ultralytics.com/quickstart/' },
+          { id: 't7-5', day: 'DAY5', text: '실시간 카메라 물체 인식 구현 (5줄 코드)', url: 'https://docs.ultralytics.com/modes/predict/' },
+          { id: 't7-6', day: 'DAY6', text: 'Isaac ROS + YOLO 파이프라인 연결', url: 'https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_object_detection/isaac_ros_yolov8/index.html' },
           { id: 't7-7', day: 'DAY7', text: '인식 결과 → 로봇 제어 신호 전달' },
         ]
       },
@@ -781,12 +784,12 @@ const PHASES = [
           { label: 'TensorRT 가이드', url: 'https://developer.nvidia.com/tensorrt' },
         ],
         tasks: [
-          { id: 't8-1', day: 'DAY1', text: 'Jetson Orin Nano 언박싱 + 초기 세팅' },
-          { id: 't8-2', day: 'DAY2', text: 'JetPack 5.x 설치' },
-          { id: 't8-3', day: 'DAY3', text: 'CUDA / TensorRT 기초 이해' },
-          { id: 't8-4', day: 'DAY4', text: 'YOLO 모델 Jetson에서 실행' },
-          { id: 't8-5', day: 'DAY5', text: 'TensorRT로 모델 최적화 (FP16)' },
-          { id: 't8-6', day: 'DAY6', text: 'Isaac ROS를 Jetson에서 실행' },
+          { id: 't8-1', day: 'DAY1', text: 'Jetson Orin Nano 언박싱 + 초기 세팅', url: 'https://developer.nvidia.com/embedded/learn/get-started-jetson-orin-nano-devkit' },
+          { id: 't8-2', day: 'DAY2', text: 'JetPack 6.x 설치', url: 'https://developer.nvidia.com/embedded/jetpack' },
+          { id: 't8-3', day: 'DAY3', text: 'CUDA / TensorRT 기초 이해', url: 'https://developer.nvidia.com/tensorrt-getting-started' },
+          { id: 't8-4', day: 'DAY4', text: 'YOLO 모델 Jetson에서 실행', url: 'https://docs.ultralytics.com/guides/nvidia-jetson/' },
+          { id: 't8-5', day: 'DAY5', text: 'TensorRT로 모델 최적화 (FP16)', url: 'https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html' },
+          { id: 't8-6', day: 'DAY6', text: 'Isaac ROS를 Jetson에서 실행', url: 'https://nvidia-isaac-ros.github.io/getting_started/index.html' },
           { id: 't8-7', day: 'DAY7', text: '성능 벤치마크 기록 + 비교' },
         ]
       },
@@ -800,12 +803,12 @@ const PHASES = [
           { label: 'Isaac ROS 전체 패키지', url: 'https://github.com/NVIDIA-ISAAC-ROS' },
         ],
         tasks: [
-          { id: 't9-1', day: 'DAY1', text: '프로젝트 설계: 목표 + 아키텍처 문서화 (README)' },
-          { id: 't9-2', day: 'DAY2', text: 'Isaac Sim 환경 세팅' },
-          { id: 't9-3', day: 'DAY3', text: 'Isaac Lab으로 AI 동작 훈련' },
-          { id: 't9-4', day: 'DAY4', text: 'Isaac ROS + 카메라 물체 인식 연결' },
-          { id: 't9-5', day: 'DAY5', text: 'Jetson에 전체 스택 배포' },
-          { id: 't9-6', day: 'DAY6', text: 'GitHub README + 데모 영상 촬영' },
+          { id: 't9-1', day: 'DAY1', text: '프로젝트 설계: 목표 + 아키텍처 문서화 (README)', url: 'https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes' },
+          { id: 't9-2', day: 'DAY2', text: 'Isaac Sim 환경 세팅', url: 'https://docs.isaacsim.omniverse.nvidia.com' },
+          { id: 't9-3', day: 'DAY3', text: 'Isaac Lab으로 AI 동작 훈련', url: 'https://isaac-sim.github.io/IsaacLab' },
+          { id: 't9-4', day: 'DAY4', text: 'Isaac ROS + 카메라 물체 인식 연결', url: 'https://nvidia-isaac-ros.github.io' },
+          { id: 't9-5', day: 'DAY5', text: 'Jetson에 전체 스택 배포', url: 'https://developer.nvidia.com/embedded/jetpack' },
+          { id: 't9-6', day: 'DAY6', text: 'GitHub README + 데모 영상 촬영', url: 'https://pages.github.com' },
           { id: 't9-7', day: 'DAY7', text: '포트폴리오 사이트 업로드 + LinkedIn 공유' },
         ]
       },
@@ -1122,7 +1125,7 @@ function renderTasks() {
         </button>
         <div class="task-day" style="background:${dayColor}18;border:1px solid ${dayColor}40;color:${dayColor}">${task.day}</div>
         <div class="task-body">
-          <div class="task-text ${done ? 'done' : ''}">${escHtml(task.text)}</div>
+          <div class="task-text ${done ? 'done' : ''}">${task.url ? `<a href="${task.url}" target="_blank" rel="noopener noreferrer" class="task-link">${escHtml(task.text)}</a>` : escHtml(task.text)}</div>
         </div>
         <div class="task-actions">
           <button class="action-btn ${hasNote ? 'note-active' : ''}" onclick="toggleNote('${task.id}')">
