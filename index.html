@@ -893,7 +893,6 @@ function tryLogin() {
   if (val === PASS) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    localStorage.setItem('rt-auth', '1');
     loadState();
     render();
   } else {
@@ -905,7 +904,6 @@ function tryLogin() {
 }
 
 function logout() {
-  localStorage.removeItem('rt-auth');
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('pwd-input').value = '';
@@ -915,14 +913,8 @@ document.getElementById('pwd-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') tryLogin();
 });
 
-// Auto-login if already authenticated
 window.addEventListener('load', () => {
-  if (localStorage.getItem('rt-auth') === '1') {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadState();
-    render();
-  }
+  loadState();
 });
 
 // ─── HELPERS ─────────────────────────────────────────
