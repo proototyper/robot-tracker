@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ROBOT ENGINEER TRACKER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #07080a;
-    --surface: #0d0f14;
-    --border: #1a1f2a;
-    --border2: #252d3a;
-    --text: #dde2ec;
-    --muted: #3a4455;
-    --muted2: #5a6880;
-    --p1: #00e5aa;
-    --p2: #76b900;
-    --p3: #ff6b35;
-    --mono: 'Space Mono', monospace;
-    --sans: 'Syne', sans-serif;
+    --bg: #f5f5f2;
+    --surface: #ffffff;
+    --border: #e4e4de;
+    --border2: #d0d0c8;
+    --text: #1a1a17;
+    --muted: #b0b0a6;
+    --muted2: #6c6c64;
+    --p1: #4a78c4;
+    --p2: #5c8a5c;
+    --p3: #c95030;
+    --mono: 'Inter', system-ui, sans-serif;
+    --sans: 'Inter', system-ui, sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,15 +57,15 @@
     position: absolute;
     top: -60px; left: -60px;
     width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(0,229,170,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(74,120,196,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
 
   .login-logo {
     font-family: var(--sans);
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     color: var(--p1);
     margin-bottom: 6px;
   }
@@ -73,7 +73,7 @@
   .login-title {
     font-family: var(--sans);
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--text);
     margin-bottom: 32px;
     line-height: 1.2;
@@ -116,10 +116,10 @@
     background: var(--p1);
     border: none;
     border-radius: 8px;
-    color: #07080a;
+    color: #ffffff;
     font-family: var(--mono);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.15em;
     padding: 14px;
     cursor: pointer;
@@ -143,7 +143,7 @@
   /* Header */
   .header {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(7,8,10,0.92);
+    background: rgba(245,245,242,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding: 14px 24px;
@@ -160,12 +160,12 @@
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
-    box-shadow: 0 0 20px rgba(0,229,170,0.3);
+    box-shadow: 0 0 16px rgba(74,120,196,0.2);
     flex-shrink: 0;
   }
 
   .logo-text { flex: 1; }
-  .logo-text .top { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--p1); }
+  .logo-text .top { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--p1); }
   .logo-text .bot { font-size: 9px; letter-spacing: 0.12em; color: var(--muted); }
 
   .header-stats { display: flex; align-items: center; gap: 16px; }
@@ -173,7 +173,7 @@
   .stat-box {
     text-align: right;
   }
-  .stat-num { font-family: var(--sans); font-size: 22px; font-weight: 800; color: var(--p1); line-height: 1; }
+  .stat-num { font-family: var(--sans); font-size: 22px; font-weight: 600; color: var(--p1); line-height: 1; }
   .stat-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-top: 2px; }
 
   .logout-btn {
@@ -202,7 +202,7 @@
     background: linear-gradient(90deg, var(--p2), var(--p1));
     border-radius: 4px;
     transition: width 0.5s ease;
-    box-shadow: 0 0 10px rgba(0,229,170,0.5);
+    box-shadow: none;
   }
 
   /* Phase tabs */
@@ -232,7 +232,7 @@
   }
 
   .phase-tab .inner { position: relative; }
-  .phase-tab .pt-label { font-size: 8px; font-weight: 700; letter-spacing: 0.15em; }
+  .phase-tab .pt-label { font-size: 8px; font-weight: 500; letter-spacing: 0.1em; }
   .phase-tab .pt-title { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--muted2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .phase-tab .pt-pct { font-size: 9px; margin-top: 3px; }
 
@@ -277,7 +277,7 @@
     transition: width 0.4s ease;
   }
 
-  .week-btn .wlabel { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; position: relative; }
+  .week-btn .wlabel { font-size: 8px; font-weight: 500; letter-spacing: 0.08em; position: relative; }
   .week-btn .wtitle { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--muted2); margin-top: 2px; line-height: 1.3; position: relative; }
   .week-btn .wbar { background: var(--bg); border-radius: 3px; height: 2px; margin-top: 6px; overflow: hidden; position: relative; }
   .week-btn .wbar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
@@ -321,8 +321,8 @@
     pointer-events: none;
   }
   .week-header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .wh-phase { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 4px; }
-  .wh-title { font-family: var(--sans); font-size: 20px; font-weight: 800; color: var(--text); }
+  .wh-phase { font-size: 9px; font-weight: 500; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .wh-title { font-family: var(--sans); font-size: 20px; font-weight: 600; color: var(--text); }
   .wh-platform {
     font-size: 10px; color: var(--muted2); margin-top: 6px;
     display: flex; align-items: center; gap: 6px;
@@ -334,7 +334,7 @@
     padding: 10px 16px;
     flex-shrink: 0;
   }
-  .wh-pct-num { font-family: var(--sans); font-size: 28px; font-weight: 800; line-height: 1; }
+  .wh-pct-num { font-family: var(--sans); font-size: 28px; font-weight: 600; line-height: 1; }
   .wh-pct-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-top: 3px; }
   .wh-bar { margin-top: 12px; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
   .wh-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
@@ -371,7 +371,7 @@
     padding: 12px 14px;
     transition: all 0.2s;
   }
-  .task-card.done { background: #0a1410; border-color: #1a2e22; }
+  .task-card.done { background: #f0f5f0; border-color: #c8d8c8; }
   .task-card:hover { border-color: var(--border2); }
 
   .task-top { display: flex; align-items: flex-start; gap: 10px; }
@@ -393,8 +393,8 @@
     border-radius: 4px;
     padding: 2px 7px;
     font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     flex-shrink: 0;
     align-self: center;
   }
@@ -423,7 +423,7 @@
     transition: all 0.2s;
   }
   .action-btn:hover { border-color: var(--muted2); color: var(--text); }
-  .action-btn.note-active { border-color: var(--p2); color: var(--p2); background: rgba(118,185,0,0.08); }
+  .action-btn.note-active { border-color: var(--p2); color: var(--p2); background: rgba(92,138,92,0.1); }
   .action-btn.delete-btn:hover { border-color: var(--p3); color: var(--p3); }
 
   /* Note area */
@@ -467,7 +467,7 @@
     color: var(--bg);
     font-family: var(--mono);
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.1em;
     padding: 5px 12px;
     cursor: pointer;
@@ -509,7 +509,7 @@
     color: var(--bg);
     font-family: var(--mono);
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.1em;
     padding: 6px 12px;
     cursor: pointer;
@@ -537,8 +537,8 @@
   }
   .nav-btn:hover:not(:disabled) { border-color: var(--border2); color: var(--text); }
   .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .nav-btn.next { border-color: rgba(0,229,170,0.3); color: var(--p1); background: rgba(0,229,170,0.04); }
-  .nav-btn.next:hover { background: rgba(0,229,170,0.08); }
+  .nav-btn.next { border-color: rgba(74,120,196,0.3); color: var(--p1); background: rgba(74,120,196,0.04); }
+  .nav-btn.next:hover { background: rgba(74,120,196,0.08); }
 
   /* Footer */
   .footer {
@@ -626,7 +626,7 @@
 // ─── DATA ────────────────────────────────────────────
 const PHASES = [
   {
-    id: 'p1', phase: 'PHASE 1', title: '기반 다지기', duration: '1~6주', color: '#00e5aa',
+    id: 'p1', phase: 'PHASE 1', title: '기반 다지기', duration: '1~6주', color: '#4a78c4',
     weeks: [
       {
         id: 'w1', week: 'Week 1~2', title: 'Python + 수학 기초',
@@ -688,7 +688,7 @@ const PHASES = [
     ]
   },
   {
-    id: 'p2', phase: 'PHASE 2', title: 'NVIDIA 생태계', duration: '7~14주', color: '#76b900',
+    id: 'p2', phase: 'PHASE 2', title: 'NVIDIA 생태계', duration: '7~14주', color: '#5c8a5c',
     weeks: [
       {
         id: 'w4', week: 'Week 7~8', title: 'Isaac ROS 시작',
@@ -750,7 +750,7 @@ const PHASES = [
     ]
   },
   {
-    id: 'p3', phase: 'PHASE 3', title: 'AI 통합', duration: '15~20주', color: '#ff6b35',
+    id: 'p3', phase: 'PHASE 3', title: 'AI 통합', duration: '15~20주', color: '#c95030',
     weeks: [
       {
         id: 'w7', week: 'Week 15~16', title: 'Computer Vision',
@@ -1014,7 +1014,7 @@ function renderNvidiaList() {
     const row = document.createElement('div');
     row.className = 'nvidia-row';
     row.innerHTML = `
-      <span style="color:${unlocked ? '#76b900' : 'var(--muted)'}">${item.name}</span>
+      <span style="color:${unlocked ? '#5c8a5c' : 'var(--muted)'}">${item.name}</span>
       <span style="color:var(--muted);font-size:8px">${item.tag}</span>
     `;
     container.appendChild(row);
