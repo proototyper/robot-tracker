@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBOT ENGINEER TRACKER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080a;
+    --surface: #0d0f14;
+    --border: #1a1f2a;
+    --border2: #252d3a;
+    --text: #dde2ec;
+    --muted: #3a4455;
+    --muted2: #5a6880;
+    --p1: #00e5aa;
+    --p2: #76b900;
+    --p3: #ff6b35;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── LOGIN ─────────────────────────────────────── */
+  #login-screen {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .login-box {
+    width: 340px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-box::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(0,229,170,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .login-logo {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--p1);
+    margin-bottom: 6px;
+  }
+
+  .login-title {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+
+  .login-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted2);
+    margin-bottom: 8px;
+  }
+
+  .login-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 20px;
+    letter-spacing: 0.3em;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+  }
+
+  .login-input:focus { border-color: var(--p1); }
+  .login-input.error { border-color: var(--p3); animation: shake 0.3s ease; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
+  .login-btn {
+    width: 100%;
+    margin-top: 16px;
+    background: var(--p1);
+    border: none;
+    border-radius: 8px;
+    color: #07080a;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .login-btn:hover { opacity: 0.9; }
+  .login-btn:active { transform: scale(0.98); }
+
+  .login-err {
+    margin-top: 10px;
+    font-size: 10px;
+    color: var(--p3);
+    text-align: center;
+    min-height: 16px;
+  }
+
+  /* ─── APP ────────────────────────────────────────── */
+  #app { display: none; }
+
+  /* Header */
+  .header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7,8,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+  }
+
+  .header-top {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .logo-chip {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--p2), var(--p1));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 20px rgba(0,229,170,0.3);
+    flex-shrink: 0;
+  }
+
+  .logo-text { flex: 1; }
+  .logo-text .top { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--p1); }
+  .logo-text .bot { font-size: 9px; letter-spacing: 0.12em; color: var(--muted); }
+
+  .header-stats { display: flex; align-items: center; gap: 16px; }
+
+  .stat-box {
+    text-align: right;
+  }
+  .stat-num { font-family: var(--sans); font-size: 22px; font-weight: 800; color: var(--p1); line-height: 1; }
+  .stat-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-top: 2px; }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--muted2);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover { border-color: var(--p3); color: var(--p3); }
+
+  .global-bar {
+    background: var(--border);
+    border-radius: 4px;
+    height: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .global-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--p2), var(--p1));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(0,229,170,0.5);
+  }
+
+  /* Phase tabs */
+  .phase-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .phase-tab {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--mono);
+  }
+
+  .phase-tab .fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    transition: width 0.5s ease;
+    pointer-events: none;
+  }
+
+  .phase-tab .inner { position: relative; }
+  .phase-tab .pt-label { font-size: 8px; font-weight: 700; letter-spacing: 0.15em; }
+  .phase-tab .pt-title { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--muted2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .phase-tab .pt-pct { font-size: 9px; margin-top: 3px; }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 16px 12px;
+  }
+
+  .sidebar-label {
+    font-size: 8px; letter-spacing: 0.2em; color: var(--muted);
+    margin-bottom: 8px; padding: 0 4px;
+  }
+
+  .week-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 10px;
+    cursor: pointer;
+    text-align: left;
+    margin-bottom: 5px;
+    font-family: var(--mono);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .week-btn .wfill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    opacity: 0.12;
+    pointer-events: none;
+    transition: width 0.4s ease;
+  }
+
+  .week-btn .wlabel { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; position: relative; }
+  .week-btn .wtitle { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--muted2); margin-top: 2px; line-height: 1.3; position: relative; }
+  .week-btn .wbar { background: var(--bg); border-radius: 3px; height: 2px; margin-top: 6px; overflow: hidden; position: relative; }
+  .week-btn .wbar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .week-btn .wcount { font-size: 8px; margin-top: 3px; position: relative; }
+
+  /* NVIDIA box */
+  .nvidia-box {
+    margin-top: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .nvidia-box .nb-title { font-size: 8px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 8px; }
+  .nvidia-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 9px;
+  }
+  .nvidia-row:last-child { border-bottom: none; }
+
+  /* Main content */
+  .main { padding: 20px 24px; }
+
+  /* Week header */
+  .week-header {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .week-header::after {
+    content: '';
+    position: absolute; right: -20px; top: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .week-header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .wh-phase { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 4px; }
+  .wh-title { font-family: var(--sans); font-size: 20px; font-weight: 800; color: var(--text); }
+  .wh-platform {
+    font-size: 10px; color: var(--muted2); margin-top: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wh-pct {
+    text-align: center;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 16px;
+    flex-shrink: 0;
+  }
+  .wh-pct-num { font-family: var(--sans); font-size: 28px; font-weight: 800; line-height: 1; }
+  .wh-pct-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-top: 3px; }
+  .wh-bar { margin-top: 12px; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+  .wh-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+
+  /* Resource links */
+  .resource-bar {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .res-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--muted2);
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: var(--mono);
+  }
+  .res-link:hover { border-color: var(--p1); color: var(--p1); }
+  .res-link .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Tasks */
+  .tasks-list { display: flex; flex-direction: column; gap: 7px; }
+
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 14px;
+    transition: all 0.2s;
+  }
+  .task-card.done { background: #0a1410; border-color: #1a2e22; }
+  .task-card:hover { border-color: var(--border2); }
+
+  .task-top { display: flex; align-items: flex-start; gap: 10px; }
+
+  .task-check {
+    width: 22px; height: 22px; border-radius: 5px;
+    border: 1.5px solid var(--muted);
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    color: var(--bg);
+    font-size: 12px;
+  }
+  .task-check.checked { border-color: var(--p1); background: var(--p1); }
+
+  .task-day {
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .task-body { flex: 1; min-width: 0; }
+
+  .task-text {
+    font-size: 12px;
+    line-height: 1.5;
+    transition: all 0.2s;
+  }
+  .task-text.done { color: var(--muted); text-decoration: line-through; }
+
+  .task-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+  .action-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .action-btn:hover { border-color: var(--muted2); color: var(--text); }
+  .action-btn.note-active { border-color: var(--p2); color: var(--p2); background: rgba(118,185,0,0.08); }
+  .action-btn.delete-btn:hover { border-color: var(--p3); color: var(--p3); }
+
+  /* Note area */
+  .note-area {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .note-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 10px 12px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s;
+    min-height: 72px;
+  }
+  .note-textarea:focus { border-color: var(--p2); }
+  .note-display {
+    background: var(--bg);
+    border-left: 2px solid var(--p2);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--muted2);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    cursor: pointer;
+  }
+  .note-display:hover { color: var(--text); }
+  .note-btns { display: flex; gap: 6px; margin-top: 6px; }
+  .note-save {
+    background: var(--p2);
+    border: none; border-radius: 5px;
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  .note-cancel {
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    color: var(--muted2);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+
+  /* Add task */
+  .add-task-row {
+    display: flex; gap: 8px; margin-top: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px dashed var(--border2);
+    border-radius: 9px;
+    align-items: center;
+  }
+  .add-task-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    outline: none;
+  }
+  .add-task-input::placeholder { color: var(--muted); }
+  .add-task-btn {
+    background: var(--p1);
+    border: none; border-radius: 6px;
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .add-task-btn:hover { opacity: 0.85; }
+
+  /* Nav */
+  .nav-row {
+    display: flex; gap: 8px; margin-top: 16px;
+  }
+  .nav-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted2);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: var(--border2); color: var(--text); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn.next { border-color: rgba(0,229,170,0.3); color: var(--p1); background: rgba(0,229,170,0.04); }
+  .nav-btn.next:hover { background: rgba(0,229,170,0.08); }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-left { font-size: 8px; color: var(--muted); letter-spacing: 0.1em; }
+  .footer-dots { display: flex; gap: 12px; align-items: center; }
+  .footer-dot { display: flex; align-items: center; gap: 5px; font-size: 8px; letter-spacing: 0.1em; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🤖 ROBOT ENGINEER</div>
+    <div class="login-title">Career<br>Tracker</div>
+    <div class="login-label">PASSCODE</div>
+    <input type="password" class="login-input" id="pwd-input" maxlength="6" placeholder="····" autocomplete="off">
+    <button class="login-btn" onclick="tryLogin()">ENTER →</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-chip">🤖</div>
+      <div class="logo-text">
+        <div class="top">ROBOT ENGINEER</div>
+        <div class="bot">CAREER TRANSITION TRACKER</div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-box">
+          <div class="stat-num" id="global-pct">0%</div>
+          <div class="stat-label" id="global-count">0/0 TASKS</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">LOCK</button>
+      </div>
+    </div>
+    <div class="global-bar"><div class="global-bar-fill" id="global-bar" style="width:0%"></div></div>
+    <div class="phase-tabs" id="phase-tabs"></div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-label">WEEKS</div>
+      <div id="week-list"></div>
+      <div class="nvidia-box">
+        <div class="nb-title">NVIDIA STACK</div>
+        <div id="nvidia-list"></div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="week-header" id="week-header"></div>
+      <div class="resource-bar" id="resource-bar"></div>
+      <div class="tasks-list" id="tasks-list"></div>
+      <div class="add-task-row">
+        <span style="font-size:12px;color:var(--muted)">+</span>
+        <input type="text" class="add-task-input" id="new-task-input" placeholder="새 태스크 추가...">
+        <button class="add-task-btn" onclick="addTask()">ADD TASK</button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" id="prev-btn" onclick="prevWeek()">← PREV WEEK</button>
+        <button class="nav-btn next" id="next-btn" onclick="nextWeek()">NEXT WEEK →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">ROBOT ENGINEER ROADMAP · 20 WEEKS</div>
+    <div class="footer-dots" id="footer-dots"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────
+const PHASES = [
+  {
+    id: 'p1', phase: 'PHASE 1', title: '기반 다지기', duration: '1~6주', color: '#00e5aa',
+    weeks: [
+      {
+        id: 'w1', week: 'Week 1~2', title: 'Python + 수학 기초',
+        platform: 'YouTube · freeCodeCamp · 3Blue1Brown',
+        links: [
+          { label: '3Blue1Brown 선형대수', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2ZAgoEa97JkzvX' },
+          { label: 'numpy 튜토리얼', url: 'https://www.youtube.com/watch?v=QUT1VHiLmmI' },
+          { label: 'Khan Academy 삼각함수', url: 'https://ko.khanacademy.org/math/trigonometry' },
+          { label: 'freeCodeCamp Python', url: 'https://www.youtube.com/watch?v=rfscVS0vtbw' },
+        ],
+        tasks: [
+          { id: 't1-1', day: 'MON', text: 'numpy 배열, 행렬 연산 실습' },
+          { id: 't1-2', day: 'TUE', text: '3Blue1Brown 선형대수 1~2강 — 벡터란 무엇인가' },
+          { id: 't1-3', day: 'WED', text: 'matplotlib로 센서 데이터 그래프 그리기' },
+          { id: 't1-4', day: 'THU', text: '3Blue1Brown 선형대수 3~4강 — 행렬 변환' },
+          { id: 't1-5', day: 'FRI', text: 'numpy로 2D 로봇 위치 계산 코딩' },
+          { id: 't1-6', day: 'SAT', text: 'Khan Academy 삼각함수 30분 + 복습' },
+          { id: 't1-7', day: 'SUN', text: '미니 프로젝트: 2D 로봇 팔 위치 계산기 만들기' },
+        ]
+      },
+      {
+        id: 'w2', week: 'Week 3~4', title: 'Ubuntu + ROS 2 입문',
+        platform: 'docs.ros.org · Ubuntu 22.04',
+        links: [
+          { label: 'Ubuntu 22.04 다운로드', url: 'https://ubuntu.com/download/desktop' },
+          { label: 'ROS 2 Humble 설치 공식', url: 'https://docs.ros.org/en/humble/Installation.html' },
+          { label: 'ROS 2 공식 튜토리얼', url: 'https://docs.ros.org/en/humble/Tutorials.html' },
+          { label: 'Ubuntu 듀얼부팅 가이드', url: 'https://www.youtube.com/watch?v=CWQMYN12QD0' },
+        ],
+        tasks: [
+          { id: 't2-1', day: 'MON', text: 'Ubuntu 22.04 듀얼부팅 설치' },
+          { id: 't2-2', day: 'TUE', text: 'ROS 2 Humble 공식 문서로 설치' },
+          { id: 't2-3', day: 'WED', text: 'ros2 run demo_nodes_cpp talker/listener 실행' },
+          { id: 't2-4', day: 'THU', text: 'Topic, Node 개념 — ros2 topic list/echo' },
+          { id: 't2-5', day: 'FRI', text: '첫 번째 Python ROS 2 노드 직접 작성' },
+          { id: 't2-6', day: 'SAT', text: 'Publisher / Subscriber 패키지 만들기' },
+          { id: 't2-7', day: 'SUN', text: 'Obsidian에 이번 주 배운 내용 정리' },
+        ]
+      },
+      {
+        id: 'w3', week: 'Week 5~6', title: 'Gazebo 시뮬레이터',
+        platform: 'Gazebo Harmonic · ROS 2',
+        links: [
+          { label: 'Gazebo 공식 설치', url: 'https://gazebosim.org/docs/harmonic/install' },
+          { label: 'URDF 튜토리얼', url: 'https://docs.ros.org/en/humble/Tutorials/Intermediate/URDF/URDF-Main.html' },
+          { label: 'TurtleBot3 시뮬 가이드', url: 'https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/' },
+          { label: 'ROS + Gazebo 연동', url: 'https://gazebosim.org/docs/harmonic/ros2_integration' },
+        ],
+        tasks: [
+          { id: 't3-1', day: 'DAY1', text: 'Gazebo Harmonic 설치' },
+          { id: 't3-2', day: 'DAY2', text: '기본 월드 띄우기' },
+          { id: 't3-3', day: 'DAY3', text: 'URDF로 간단한 로봇 모델 만들기' },
+          { id: 't3-4', day: 'DAY4', text: 'ROS 2로 Gazebo 로봇 제어하기' },
+          { id: 't3-5', day: 'DAY5', text: 'TurtleBot3 시뮬 키보드 조종' },
+          { id: 't3-6', day: 'DAY6', text: '에러 수정 + 복습' },
+          { id: 't3-7', day: 'DAY7', text: '미니 프로젝트: 자율 이동 경로 설정' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'p2', phase: 'PHASE 2', title: 'NVIDIA 생태계', duration: '7~14주', color: '#76b900',
+    weeks: [
+      {
+        id: 'w4', week: 'Week 7~8', title: 'Isaac ROS 시작',
+        platform: 'developer.nvidia.com · Docker',
+        links: [
+          { label: 'NVIDIA Developer 가입', url: 'https://developer.nvidia.com/login' },
+          { label: 'Isaac ROS 공식', url: 'https://nvidia-isaac-ros.github.io/getting_started/index.html' },
+          { label: 'NVIDIA NGC 카탈로그', url: 'https://catalog.ngc.nvidia.com' },
+          { label: 'Docker 설치', url: 'https://docs.docker.com/engine/install/ubuntu/' },
+        ],
+        tasks: [
+          { id: 't4-1', day: 'MON', text: 'NVIDIA Developer 계정 + NGC 등록' },
+          { id: 't4-2', day: 'TUE', text: 'Docker + NVIDIA Container Toolkit 설치' },
+          { id: 't4-3', day: 'WED', text: 'Isaac ROS 환경 세팅 (공식 getting_started)' },
+          { id: 't4-4', day: 'THU', text: 'Isaac ROS AprilTag 튜토리얼 (카메라 태그 인식)' },
+          { id: 't4-5', day: 'FRI', text: 'Isaac ROS Visual SLAM 튜토리얼' },
+          { id: 't4-6', day: 'SAT', text: 'Gazebo + Isaac ROS 연동' },
+          { id: 't4-7', day: 'SUN', text: '정리 + 다음 주 계획 세우기' },
+        ]
+      },
+      {
+        id: 'w5', week: 'Week 9~11', title: 'Isaac Sim 입문',
+        platform: 'Omniverse Isaac Sim',
+        links: [
+          { label: 'Isaac Sim 다운로드', url: 'https://developer.nvidia.com/isaac/sim' },
+          { label: 'Isaac Sim 공식 문서', url: 'https://docs.isaacsim.omniverse.nvidia.com' },
+          { label: 'Isaac Sim YouTube 튜토리얼', url: 'https://www.youtube.com/playlist?list=PL3jK4xNnlCVf1SzxjCm7ZxDBNl9QYyV8X' },
+          { label: 'NVIDIA Developer Forum', url: 'https://forums.developer.nvidia.com/c/omniverse/simulation/69' },
+        ],
+        tasks: [
+          { id: 't5-1', day: 'WK1', text: 'Isaac Sim 다운로드 + 설치 (50GB 주의)' },
+          { id: 't5-2', day: 'WK1', text: 'UI 기본 조작 — 씬 탐색, 카메라' },
+          { id: 't5-3', day: 'WK1', text: '기본 씬 만들기 (바닥, 물체, 조명)' },
+          { id: 't5-4', day: 'WK2', text: 'Franka / UR10 로봇 에셋 불러오기' },
+          { id: 't5-5', day: 'WK2', text: 'ROS 2 브릿지 연결' },
+          { id: 't5-6', day: 'WK2', text: 'Python API로 로봇 관절 제어' },
+          { id: 't5-7', day: 'WK3', text: '커스텀 환경 + 카메라/LiDAR 센서 붙이기' },
+        ]
+      },
+      {
+        id: 'w6', week: 'Week 12~14', title: 'Isaac Lab — 강화학습',
+        platform: 'github.com/isaac-sim/IsaacLab',
+        links: [
+          { label: 'Isaac Lab GitHub', url: 'https://github.com/isaac-sim/IsaacLab' },
+          { label: 'Isaac Lab 공식 문서', url: 'https://isaac-sim.github.io/IsaacLab' },
+          { label: 'OpenAI Spinning Up (RL 기초)', url: 'https://spinningup.openai.com' },
+          { label: 'RL 개념 10분 영상', url: 'https://www.youtube.com/watch?v=JgvyzIkgxF0' },
+        ],
+        tasks: [
+          { id: 't6-1', day: 'DAY1', text: '강화학습 개념 영상 시청 (RL in 10 minutes)' },
+          { id: 't6-2', day: 'DAY2', text: 'Isaac Lab 설치 (공식 GitHub)' },
+          { id: 't6-3', day: 'DAY3', text: 'Ant locomotion 예제 실행 — 개미 걷기 훈련' },
+          { id: 't6-4', day: 'DAY4', text: '코드 뜯기 + 리워드 파라미터 수정' },
+          { id: 't6-5', day: 'DAY5', text: '커스텀 환경 만들기 시도' },
+          { id: 't6-6', day: 'DAY6', text: 'Sim-to-Real 개념 학습' },
+          { id: 't6-7', day: 'DAY7', text: 'Isaac Lab 미니 프로젝트 설계 문서 작성' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'p3', phase: 'PHASE 3', title: 'AI 통합', duration: '15~20주', color: '#ff6b35',
+    weeks: [
+      {
+        id: 'w7', week: 'Week 15~16', title: 'Computer Vision',
+        platform: 'OpenCV · PyTorch · Ultralytics YOLO',
+        links: [
+          { label: 'OpenCV Python (freeCodeCamp)', url: 'https://www.youtube.com/watch?v=oXlwWbU8l2o' },
+          { label: 'fast.ai 딥러닝 강의 (무료)', url: 'https://course.fast.ai' },
+          { label: 'Ultralytics YOLO 공식', url: 'https://docs.ultralytics.com' },
+          { label: 'PyTorch 공식 튜토리얼', url: 'https://pytorch.org/tutorials/' },
+        ],
+        tasks: [
+          { id: 't7-1', day: 'DAY1', text: 'OpenCV 기초 — 이미지 읽기, 변환, 필터링' },
+          { id: 't7-2', day: 'DAY2', text: '실시간 카메라 스트림 처리' },
+          { id: 't7-3', day: 'DAY3', text: 'PyTorch 기초 (fast.ai 1~2강)' },
+          { id: 't7-4', day: 'DAY4', text: 'pip install ultralytics → YOLO 설치' },
+          { id: 't7-5', day: 'DAY5', text: '실시간 카메라 물체 인식 구현 (5줄 코드)' },
+          { id: 't7-6', day: 'DAY6', text: 'Isaac ROS + YOLO 파이프라인 연결' },
+          { id: 't7-7', day: 'DAY7', text: '인식 결과 → 로봇 제어 신호 전달' },
+        ]
+      },
+      {
+        id: 'w8', week: 'Week 17~18', title: 'Jetson 하드웨어',
+        platform: 'NVIDIA Jetson Orin Nano',
+        links: [
+          { label: 'Jetson Orin Nano 구매', url: 'https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/nano-developer-kit/' },
+          { label: 'JetPack 설치 공식', url: 'https://developer.nvidia.com/embedded/jetpack' },
+          { label: 'Jetson 시작 가이드', url: 'https://developer.nvidia.com/embedded/learn/get-started-jetson-orin-nano-devkit' },
+          { label: 'TensorRT 가이드', url: 'https://developer.nvidia.com/tensorrt' },
+        ],
+        tasks: [
+          { id: 't8-1', day: 'DAY1', text: 'Jetson Orin Nano 언박싱 + 초기 세팅' },
+          { id: 't8-2', day: 'DAY2', text: 'JetPack 5.x 설치' },
+          { id: 't8-3', day: 'DAY3', text: 'CUDA / TensorRT 기초 이해' },
+          { id: 't8-4', day: 'DAY4', text: 'YOLO 모델 Jetson에서 실행' },
+          { id: 't8-5', day: 'DAY5', text: 'TensorRT로 모델 최적화 (FP16)' },
+          { id: 't8-6', day: 'DAY6', text: 'Isaac ROS를 Jetson에서 실행' },
+          { id: 't8-7', day: 'DAY7', text: '성능 벤치마크 기록 + 비교' },
+        ]
+      },
+      {
+        id: 'w9', week: 'Week 19~20', title: '통합 포트폴리오 프로젝트',
+        platform: 'Full Stack · GitHub Portfolio',
+        links: [
+          { label: 'GitHub Pages 호스팅', url: 'https://pages.github.com' },
+          { label: 'ROS 2 Nav2 문서', url: 'https://nav2.ros.org' },
+          { label: 'MoveIt 2 공식', url: 'https://moveit.ros.org' },
+          { label: 'Isaac ROS 전체 패키지', url: 'https://github.com/NVIDIA-ISAAC-ROS' },
+        ],
+        tasks: [
+          { id: 't9-1', day: 'DAY1', text: '프로젝트 설계: 목표 + 아키텍처 문서화 (README)' },
+          { id: 't9-2', day: 'DAY2', text: 'Isaac Sim 환경 세팅' },
+          { id: 't9-3', day: 'DAY3', text: 'Isaac Lab으로 AI 동작 훈련' },
+          { id: 't9-4', day: 'DAY4', text: 'Isaac ROS + 카메라 물체 인식 연결' },
+          { id: 't9-5', day: 'DAY5', text: 'Jetson에 전체 스택 배포' },
+          { id: 't9-6', day: 'DAY6', text: 'GitHub README + 데모 영상 촬영' },
+          { id: 't9-7', day: 'DAY7', text: '포트폴리오 사이트 업로드 + LinkedIn 공유' },
+        ]
+      },
+    ]
+  }
+];
+
+const NVIDIA_STACK = [
+  { name: 'Isaac ROS', phase: 1, week: 0, tag: 'Wk 7~8' },
+  { name: 'Isaac Sim', phase: 1, week: 1, tag: 'Wk 9~11' },
+  { name: 'Isaac Lab', phase: 1, week: 2, tag: 'Wk 12~14' },
+  { name: 'Jetson Orin', phase: 2, week: 1, tag: 'Wk 17~18' },
+];
+
+// ─── STATE ───────────────────────────────────────────
+let state = {
+  activePhase: 0,
+  activeWeek: 0,
+  completed: {},
+  notes: {},
+  openNotes: {},
+  editingNotes: {},
+  phases: JSON.parse(JSON.stringify(PHASES)), // deep copy for mutations
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('robot-tracker-state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.completed = parsed.completed || {};
+      state.notes = parsed.notes || {};
+      // Merge saved custom tasks
+      if (parsed.customTasks) {
+        parsed.customTasks.forEach(({ weekId, task }) => {
+          state.phases.forEach(phase => {
+            phase.weeks.forEach(week => {
+              if (week.id === weekId) {
+                if (!week.tasks.find(t => t.id === task.id)) {
+                  week.tasks.push(task);
+                }
+              }
+            });
+          });
+        });
+      }
+    }
+  } catch(e) {}
+}
+
+function saveState() {
+  const customTasks = [];
+  state.phases.forEach(phase => {
+    phase.weeks.forEach(week => {
+      week.tasks.forEach(task => {
+        if (task.id.startsWith('custom-')) {
+          customTasks.push({ weekId: week.id, task });
+        }
+      });
+    });
+  });
+  localStorage.setItem('robot-tracker-state', JSON.stringify({
+    completed: state.completed,
+    notes: state.notes,
+    customTasks,
+  }));
+}
+
+// ─── AUTH ────────────────────────────────────────────
+const PASS = '0995';
+
+function tryLogin() {
+  const val = document.getElementById('pwd-input').value;
+  const input = document.getElementById('pwd-input');
+  const err = document.getElementById('login-err');
+  if (val === PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    localStorage.setItem('rt-auth', '1');
+    loadState();
+    render();
+  } else {
+    err.textContent = '잘못된 비밀번호';
+    input.classList.add('error');
+    input.value = '';
+    setTimeout(() => { input.classList.remove('error'); err.textContent = ''; }, 1500);
+  }
+}
+
+function logout() {
+  localStorage.removeItem('rt-auth');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pwd-input').value = '';
+}
+
+document.getElementById('pwd-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') tryLogin();
+});
+
+// Auto-login if already authenticated
+window.addEventListener('load', () => {
+  if (localStorage.getItem('rt-auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadState();
+    render();
+  }
+});
+
+// ─── HELPERS ─────────────────────────────────────────
+function allTasks() {
+  return state.phases.flatMap(p => p.weeks.flatMap(w => w.tasks));
+}
+
+function globalProgress() {
+  const tasks = allTasks();
+  const done = tasks.filter(t => state.completed[t.id]).length;
+  return { done, total: tasks.length, pct: tasks.length ? Math.round((done / tasks.length) * 100) : 0 };
+}
+
+function weekProgress(week) {
+  const done = week.tasks.filter(t => state.completed[t.id]).length;
+  return { done, total: week.tasks.length, pct: week.tasks.length ? Math.round((done / week.tasks.length) * 100) : 0 };
+}
+
+function phaseProgress(phase) {
+  const tasks = phase.weeks.flatMap(w => w.tasks);
+  const done = tasks.filter(t => state.completed[t.id]).length;
+  return { done, total: tasks.length, pct: tasks.length ? Math.round((done / tasks.length) * 100) : 0 };
+}
+
+function currentPhase() { return state.phases[state.activePhase]; }
+function currentWeek() { return currentPhase().weeks[state.activeWeek]; }
+
+// ─── RENDER ──────────────────────────────────────────
+function render() {
+  renderGlobal();
+  renderPhaseTabs();
+  renderWeekList();
+  renderNvidiaList();
+  renderWeekHeader();
+  renderResourceBar();
+  renderTasks();
+  renderNav();
+  renderFooter();
+}
+
+function renderGlobal() {
+  const { done, total, pct } = globalProgress();
+  document.getElementById('global-pct').textContent = pct + '%';
+  document.getElementById('global-count').textContent = done + '/' + total + ' TASKS';
+  document.getElementById('global-bar').style.width = pct + '%';
+}
+
+function renderPhaseTabs() {
+  const container = document.getElementById('phase-tabs');
+  container.innerHTML = '';
+  state.phases.forEach((phase, i) => {
+    const { pct } = phaseProgress(phase);
+    const active = state.activePhase === i;
+    const btn = document.createElement('button');
+    btn.className = 'phase-tab';
+    btn.style.borderColor = active ? phase.color : '';
+    btn.innerHTML = `
+      <div class="fill" style="width:${pct}%;background:${phase.color}18"></div>
+      <div class="inner">
+        <div class="pt-label" style="color:${active ? phase.color : 'var(--muted)'}">${phase.phase}</div>
+        <div class="pt-title" style="color:${active ? 'var(--text)' : ''}">${phase.title}</div>
+        <div class="pt-pct" style="color:${phase.color}">${pct}%</div>
+      </div>
+    `;
+    btn.onclick = () => { state.activePhase = i; state.activeWeek = 0; render(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderWeekList() {
+  const container = document.getElementById('week-list');
+  container.innerHTML = '';
+  const phase = currentPhase();
+  phase.weeks.forEach((week, i) => {
+    const { done, total, pct } = weekProgress(week);
+    const active = state.activeWeek === i;
+    const btn = document.createElement('button');
+    btn.className = 'week-btn';
+    btn.style.borderColor = active ? phase.color : '';
+    btn.innerHTML = `
+      <div class="wfill" style="width:${pct}%;background:${phase.color}"></div>
+      <div class="wlabel" style="color:${active ? phase.color : 'var(--muted)'}">${week.week}</div>
+      <div class="wtitle" style="color:${active ? 'var(--text)' : ''}">${week.title}</div>
+      <div class="wbar"><div class="wbar-fill" style="width:${pct}%;background:${phase.color}"></div></div>
+      <div class="wcount" style="color:${phase.color}">${done}/${total}</div>
+    `;
+    btn.onclick = () => { state.activeWeek = i; render(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderNvidiaList() {
+  const container = document.getElementById('nvidia-list');
+  container.innerHTML = '';
+  NVIDIA_STACK.forEach(item => {
+    const unlocked = state.activePhase > item.phase ||
+      (state.activePhase === item.phase && state.activeWeek >= item.week);
+    const row = document.createElement('div');
+    row.className = 'nvidia-row';
+    row.innerHTML = `
+      <span style="color:${unlocked ? '#76b900' : 'var(--muted)'}">${item.name}</span>
+      <span style="color:var(--muted);font-size:8px">${item.tag}</span>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function renderWeekHeader() {
+  const phase = currentPhase();
+  const week = currentWeek();
+  const { pct } = weekProgress(week);
+  const el = document.getElementById('week-header');
+  el.style.borderColor = phase.color + '40';
+  el.innerHTML = `
+    <div style="position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,${phase.color}10 0%,transparent 70%);pointer-events:none"></div>
+    <div class="week-header-top">
+      <div>
+        <div class="wh-phase" style="color:${phase.color}">${phase.phase} · ${week.week}</div>
+        <div class="wh-title">${week.title}</div>
+        <div class="wh-platform">📦 ${week.platform}</div>
+      </div>
+      <div class="wh-pct">
+        <div class="wh-pct-num" style="color:${phase.color}">${pct}%</div>
+        <div class="wh-pct-label">COMPLETE</div>
+      </div>
+    </div>
+    <div class="wh-bar">
+      <div class="wh-bar-fill" style="width:${pct}%;background:${phase.color};box-shadow:0 0 8px ${phase.color}60"></div>
+    </div>
+  `;
+}
+
+function renderResourceBar() {
+  const container = document.getElementById('resource-bar');
+  container.innerHTML = '';
+  const week = currentWeek();
+  const phase = currentPhase();
+  if (week.links) {
+    week.links.forEach(link => {
+      const a = document.createElement('a');
+      a.className = 'res-link';
+      a.href = link.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = `<span class="dot" style="background:${phase.color}"></span>${link.label} ↗`;
+      container.appendChild(a);
+    });
+  }
+}
+
+const DAY_COLORS = {
+  MON:'#4ecdc4',TUE:'#45b7d1',WED:'#96ceb4',THU:'#ffd166',
+  FRI:'#c77dff',SAT:'#98d8c8',SUN:'#ffd93d'
+};
+function getDayColor(day) {
+  return DAY_COLORS[day] || currentPhase().color;
+}
+
+function renderTasks() {
+  const container = document.getElementById('tasks-list');
+  container.innerHTML = '';
+  const week = currentWeek();
+  const phase = currentPhase();
+
+  week.tasks.forEach((task) => {
+    const done = !!state.completed[task.id];
+    const hasNote = !!state.notes[task.id];
+    const noteOpen = !!state.openNotes[task.id];
+    const editing = !!state.editingNotes[task.id];
+    const dayColor = getDayColor(task.day);
+
+    const card = document.createElement('div');
+    card.className = 'task-card' + (done ? ' done' : '');
+
+    let noteHTML = '';
+    if (noteOpen) {
+      if (editing) {
+        noteHTML = `
+          <div class="note-area">
+            <textarea class="note-textarea" id="note-${task.id}" placeholder="공부 메모, 에러 기록, 링크 등...">${state.notes[task.id] || ''}</textarea>
+            <div class="note-btns">
+              <button class="note-save" onclick="saveNote('${task.id}')">SAVE</button>
+              <button class="note-cancel" onclick="cancelNote('${task.id}')">CANCEL</button>
+            </div>
+          </div>`;
+      } else if (hasNote) {
+        noteHTML = `
+          <div class="note-area">
+            <div class="note-display" onclick="editNote('${task.id}')">${escHtml(state.notes[task.id])}</div>
+            <div class="note-btns">
+              <button class="note-save" onclick="editNote('${task.id}')">EDIT</button>
+              <button class="note-cancel" onclick="deleteNote('${task.id}')">DELETE</button>
+            </div>
+          </div>`;
+      }
+    } else if (!noteOpen && !hasNote) {
+      noteHTML = '';
+    }
+
+    const isCustom = task.id.startsWith('custom-');
+
+    card.innerHTML = `
+      <div class="task-top">
+        <button class="task-check ${done ? 'checked' : ''}" onclick="toggleTask('${task.id}')" style="${done ? `background:${phase.color};border-color:${phase.color}` : ''}">
+          ${done ? '✓' : ''}
+        </button>
+        <div class="task-day" style="background:${dayColor}18;border:1px solid ${dayColor}40;color:${dayColor}">${task.day}</div>
+        <div class="task-body">
+          <div class="task-text ${done ? 'done' : ''}">${escHtml(task.text)}</div>
+        </div>
+        <div class="task-actions">
+          <button class="action-btn ${hasNote ? 'note-active' : ''}" onclick="toggleNote('${task.id}')">
+            ${hasNote ? 'NOTE ✓' : 'NOTE'}
+          </button>
+          ${isCustom ? `<button class="action-btn delete-btn" onclick="deleteTask('${task.id}')">✕</button>` : ''}
+        </div>
+      </div>
+      ${noteHTML}
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function renderNav() {
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const atStart = state.activePhase === 0 && state.activeWeek === 0;
+  const atEnd = state.activePhase === state.phases.length - 1 &&
+    state.activeWeek === currentPhase().weeks.length - 1;
+  prevBtn.disabled = atStart;
+  nextBtn.disabled = atEnd;
+}
+
+function renderFooter() {
+  const container = document.getElementById('footer-dots');
+  container.innerHTML = '';
+  state.phases.forEach((phase, i) => {
+    const { pct } = phaseProgress(phase);
+    const active = state.activePhase === i;
+    container.innerHTML += `
+      <div class="footer-dot" style="color:${active ? phase.color : 'var(--muted)'}">
+        <div style="width:6px;height:6px;border-radius:50%;background:${phase.color};opacity:${active ? 1 : 0.3}"></div>
+        ${pct}%
+      </div>
+    `;
+  });
+}
+
+// ─── ACTIONS ─────────────────────────────────────────
+function toggleTask(id) {
+  state.completed[id] = !state.completed[id];
+  saveState();
+  render();
+}
+
+function toggleNote(id) {
+  if (!state.openNotes[id]) {
+    state.openNotes[id] = true;
+    if (!state.notes[id]) state.editingNotes[id] = true;
+  } else {
+    state.openNotes[id] = false;
+    state.editingNotes[id] = false;
+  }
+  render();
+}
+
+function saveNote(id) {
+  const ta = document.getElementById('note-' + id);
+  if (ta) {
+    const val = ta.value.trim();
+    if (val) state.notes[id] = val;
+    else delete state.notes[id];
+  }
+  state.editingNotes[id] = false;
+  saveState();
+  render();
+}
+
+function cancelNote(id) {
+  state.editingNotes[id] = false;
+  if (!state.notes[id]) state.openNotes[id] = false;
+  render();
+}
+
+function editNote(id) {
+  state.editingNotes[id] = true;
+  state.openNotes[id] = true;
+  render();
+  setTimeout(() => {
+    const ta = document.getElementById('note-' + id);
+    if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+  }, 50);
+}
+
+function deleteNote(id) {
+  delete state.notes[id];
+  state.openNotes[id] = false;
+  state.editingNotes[id] = false;
+  saveState();
+  render();
+}
+
+function deleteTask(id) {
+  const week = currentWeek();
+  week.tasks = week.tasks.filter(t => t.id !== id);
+  delete state.completed[id];
+  delete state.notes[id];
+  saveState();
+  render();
+}
+
+function addTask() {
+  const input = document.getElementById('new-task-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const week = currentWeek();
+  const newTask = {
+    id: 'custom-' + Date.now(),
+    day: 'NEW',
+    text: text,
+  };
+  week.tasks.push(newTask);
+  input.value = '';
+  saveState();
+  render();
+}
+
+document.getElementById('new-task-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addTask();
+});
+
+function prevWeek() {
+  if (state.activeWeek > 0) {
+    state.activeWeek--;
+  } else if (state.activePhase > 0) {
+    state.activePhase--;
+    state.activeWeek = currentPhase().weeks.length - 1;
+  }
+  render();
+}
+
+function nextWeek() {
+  if (state.activeWeek < currentPhase().weeks.length - 1) {
+    state.activeWeek++;
+  } else if (state.activePhase < state.phases.length - 1) {
+    state.activePhase++;
+    state.activeWeek = 0;
+  }
+  render();
+}
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
